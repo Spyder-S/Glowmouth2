@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import useFade from '../hooks/useFade.jsx';
 import Orb from '../components/Orb.jsx';
 import Disc from '../components/Disc.jsx';
 
@@ -9,18 +10,7 @@ const STEPS = [
   { n: "04", ico: "🧠", t: "AI analysis", b: "Encrypted upload. Results typically arrive in 20–40 seconds with full indicator breakdown." },
 ];
 
-function useFade(ref) {
-  useEffect(() => {
-    if (!ref.current) return;
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); obs.unobserve(e.target); } });
-    }, { threshold: 0.08 });
-    ref.current.querySelectorAll(".fade").forEach(el => obs.observe(el));
-    return () => obs.disconnect();
-  }, []);
-}
-
-function Home({ score }) {
+function Home({ score, onGetStarted }) {
   const pageRef = useRef(null);
   useFade(pageRef);
 
@@ -39,7 +29,7 @@ function Home({ score }) {
             <h1>Your smile,<br /><em>illuminated.</em></h1>
             <p className="lead">GlowMouth uses AI-powered scanning to give you a daily wellness score — and the personalised habits to improve it.</p>
             <div className="hero-ctas">
-              <button className="btn btn-teal btn-teal-lg" onClick={() => alert("Signup modal")}>Start Free Trial →</button>
+              <button className="btn btn-teal btn-teal-lg" onClick={onGetStarted}>Start Free Trial →</button>
               <button className="btn btn-outline" onClick={() => document.getElementById("features")?.scrollIntoView({ behavior: "smooth" })}>How it works</button>
             </div>
             <p className="hero-note">⚕ Not a medical device · Not for diagnosis · Wellness screening only</p>

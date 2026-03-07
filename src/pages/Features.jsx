@@ -1,4 +1,5 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
+import useFade from '../hooks/useFade.jsx';
 import Disc from '../components/Disc.jsx';
 
 const FEATURES = [
@@ -13,17 +14,6 @@ const TESTIMONIALS = [
   { q: "Watching my GlowScore climb from 58 to 81 over six weeks was more motivating than anything else I've tried.", who: "Marcus T. — verified user" },
   { q: "Love that it's honest — not pretending to diagnose anything, just giving me useful data to act on.", who: "Priya L. — verified user" },
 ];
-
-function useFade(ref) {
-  useEffect(() => {
-    if (!ref.current) return;
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); obs.unobserve(e.target); } });
-    }, { threshold: 0.08 });
-    ref.current.querySelectorAll(".fade").forEach(el => obs.observe(el));
-    return () => obs.disconnect();
-  }, []);
-}
 
 function Features() {
   const pageRef = useRef(null);

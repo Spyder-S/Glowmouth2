@@ -1,17 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
+import useFade from '../hooks/useFade.jsx';
 
-function useFade(ref) {
-  useEffect(() => {
-    if (!ref.current) return;
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); obs.unobserve(e.target); } });
-    }, { threshold: 0.08 });
-    ref.current.querySelectorAll(".fade").forEach(el => obs.observe(el));
-    return () => obs.disconnect();
-  }, []);
-}
-
-function Pricing() {
+function Pricing({ openModal }) {
   const pageRef = useRef(null);
   useFade(pageRef);
 
@@ -38,7 +28,7 @@ function Pricing() {
                 <div className="price-per">{p.per}</div>
                 <p className="price-desc">{p.desc}</p>
                 <ul className="price-list">{p.feats.map(f => <li key={f}>{f}</li>)}</ul>
-                <button className={`price-btn ${p.btn}`} onClick={() => alert("Signup modal")}>{p.cta}</button>
+                <button className={`price-btn ${p.btn}`} onClick={() => openModal('signup')}>{p.cta}</button>
               </div>
             ))}
           </div>

@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
+import useFade from '../hooks/useFade.jsx';
 
 const FAQS = [
   { q: "Is GlowMouth a medical device?", a: "No. GlowMouth is a wellness screening tool. GlowScore and all indicators are for awareness only — not medical diagnosis. Always consult a dentist for health concerns." },
@@ -9,18 +10,8 @@ const FAQS = [
   { q: "What's the refund policy?", a: "Subscriptions cancel anytime; access continues to end of billing period. The device has a 30-day satisfaction guarantee from delivery." },
 ];
 
-function useFade(ref) {
-  useEffect(() => {
-    if (!ref.current) return;
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); obs.unobserve(e.target); } });
-    }, { threshold: 0.08 });
-    ref.current.querySelectorAll(".fade").forEach(el => obs.observe(el));
-    return () => obs.disconnect();
-  }, []);
-}
 
-function FAQ() {
+function FAQ({ openModal }) {
   const [openFaq, setOpenFaq] = useState(null);
   const pageRef = useRef(null);
   useFade(pageRef);
@@ -56,8 +47,8 @@ function FAQ() {
           <h2>Start <em>glowing</em> today</h2>
           <p className="lead">Join thousands building better oral wellness habits. 14-day free trial, no card needed.</p>
           <div className="cta-btns">
-            <button className="btn btn-teal btn-teal-lg" onClick={() => alert("Signup modal")}>Get Started Free →</button>
-            <button className="btn btn-outline" onClick={() => alert("Signin modal")}>Sign In</button>
+            <button className="btn btn-teal btn-teal-lg" onClick={() => openModal('signup')}>Get Started Free →</button>
+            <button className="btn btn-outline" onClick={() => openModal('signin')}>Sign In</button>
           </div>
           <p className="cta-note">⚕ Not a medical device · Not for diagnosis · Always consult your dentist</p>
         </div>
