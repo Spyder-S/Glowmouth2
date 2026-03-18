@@ -6,7 +6,6 @@ This is a React + Vite SPA demonstrating the core workflows for the GlowMouth or
 
 - Supabase-backed authentication with fallback to in-browser storage
 - Camera-based multi-angle scan flow
-- Fake "GlowScore" analysis service with tiered observations
 - Scan history persistence (Supabase or localStorage)
 - Polished responsive UI with premium feel
 - Auth flows: sign up, sign in, forgot/reset password, protected routes
