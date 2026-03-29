@@ -1,52 +1,49 @@
 import { Link } from 'react-router-dom';
-import Logo from './Logo.jsx';
+import Logo from './Logo';
 
-function Footer() {
+export default function Footer() {
   return (
-    <footer>
-      <div className="wrap">
-        <div className="ft-grid">
-          <div>
-            <Logo />
-            <p className="ft-desc">Wellness oral intelligence. Track your GlowScore. Build better habits.</p>
-            <p className="ft-disc">Not a medical device.<br />Not for diagnosis.<br />Wellness screening only.</p>
+    <footer className="footer">
+      <div className="container">
+        <div className="footer-grid">
+          <div className="footer-col">
+            <Logo variant="light" />
+            <p className="footer-tagline">
+              Biological oral health monitoring.<br />
+              Know what&apos;s actually happening in your mouth.
+            </p>
+            <p className="footer-disclaimer">Not a medical device. Not for diagnosis.</p>
           </div>
-          <div>
-            <p className="ft-h">Product</p>
-            <ul className="ft-links">
-              <li><Link to="/features">AI Scan</Link></li>
-              <li><Link to="/features">GlowScore</Link></li>
+          <div className="footer-col">
+            <span className="footer-col-head">Product</span>
+            <ul>
+              <li><Link to="/how-it-works">How It Works</Link></li>
+              <li><Link to="/science">Science</Link></li>
               <li><Link to="/pricing">Pricing</Link></li>
-              <li><Link to="/pricing">Device</Link></li>
-            </ul>
-          </div>
-          <div>
-            <p className="ft-h">Company</p>
-            <ul className="ft-links">
-              <li><Link to="/about">About</Link></li>
               <li><Link to="/faq">FAQ</Link></li>
-              <li><Link to="/support">Support</Link></li>
-              <li><Link to="/blog">Blog</Link></li>
             </ul>
           </div>
-          <div>
-            <p className="ft-h">Legal</p>
-            <ul className="ft-links">
-              <li><Link to="/privacy">Privacy Policy</Link></li>
-              <li><Link to="/terms">Terms of Service</Link></li>
-              <li><Link to="/consent">Consent Policy</Link></li>
-              <li><Link to="/cookie">Cookie Policy</Link></li>
-              <li><Link to="/refund">Refund Policy</Link></li>
+          <div className="footer-col">
+            <span className="footer-col-head">Company</span>
+            <ul>
+              <li><a href="#">About</a></li>
+              <li><a href="#">Contact</a></li>
+            </ul>
+          </div>
+          <div className="footer-col">
+            <span className="footer-col-head">Legal</span>
+            <ul>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms of Service</a></li>
+              <li><a href="#">Refund Policy</a></li>
             </ul>
           </div>
         </div>
-        <div className="ft-bottom">
-          <span className="ft-copy">© {new Date().getFullYear()} GlowMouth, Inc.</span>
-          <span className="ft-legal">⚕ NOT A MEDICAL DEVICE · WELLNESS SCREENING ONLY</span>
+        <div className="footer-bottom">
+          <p className="footer-legal">© 2026 GlowMouth, Inc.</p>
+          <p className="footer-mono-note">NOT A MEDICAL DEVICE · WELLNESS ONLY</p>
         </div>
       </div>
     </footer>
   );
 }
-
-export default Footer;

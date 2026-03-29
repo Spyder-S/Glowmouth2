@@ -1,105 +1,51 @@
-import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider, useAuth } from './AuthContext.jsx';
-import Nav from './components/Nav.jsx';
-import Footer from './components/Footer.jsx';
-import AuthModal from './components/AuthModal.jsx';
-import Home from './pages/Home.jsx';
-import Features from './pages/Features.jsx';
-import Pricing from './pages/Pricing.jsx';
-import FAQ from './pages/FAQ.jsx';
-import Dashboard from './pages/Dashboard.jsx';
-import Scan from './pages/Scan.jsx';
-import Results from './pages/Results.jsx';
-import History from './pages/History.jsx';
-import About from './pages/About.jsx';
-import Support from './pages/Support.jsx';
-import Privacy from './pages/Privacy.jsx';
-import Terms from './pages/Terms.jsx';
-import Consent from './pages/Consent.jsx';
-import Cookie from './pages/Cookie.jsx';
-import Refund from './pages/Refund.jsx';
-import Blog from './pages/Blog.jsx';
-import ForgotPassword from './pages/ForgotPassword.jsx';
-import ResetPassword from './pages/ResetPassword.jsx';
-import NotFound from './pages/NotFound.jsx';
-import ProtectedRoute from './components/ProtectedRoute.jsx';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import ProtectedRoute from './components/ProtectedRoute';
 
-function AppContent() {
-  const [modal, setModal] = useState(null); // "signin" | "signup"
-  const [score, setScore] = useState(78);
-  const { user } = useAuth();
+import Home from './pages/public/Home';
+import HowItWorks from './pages/public/HowItWorks';
+import Science from './pages/public/Science';
+import Pricing from './pages/public/Pricing';
+import FAQ from './pages/public/FAQ';
 
-  // slowly drift score for demo feel
-  useEffect(() => {
-    const t = setInterval(() => setScore(s => Math.max(68, Math.min(90, s + (Math.random() > .5 ? 1 : -1)))), 2600);
-    return () => clearInterval(t);
-  }, []);
+import Login from './pages/auth/Login';
+import Signup from './pages/auth/Signup';
 
-  // listen for external requests to show auth modal
-  useEffect(() => {
-    const handler = e => {
-      const m = e.detail?.mode;
-      if (m === 'signin' || m === 'signup') {
-        setModal(m);
-      }
-    };
-    window.addEventListener('openAuth', handler);
-    return () => window.removeEventListener('openAuth', handler);
-  }, []);
+import Dashboard from './pages/app/Dashboard';
+import Scan from './pages/app/Scan';
+import Results from './pages/app/Results';
+import History from './pages/app/History';
+import Progress from './pages/app/Progress';
+import Insights from './pages/app/Insights';
+import Reports from './pages/app/Reports';
+import Settings from './pages/app/Settings';
+import Upgrade from './pages/app/Upgrade';
 
+import NotFound from './pages/NotFound';
+
+export default function App() {
   return (
-    <>
-      {modal && (
-        <AuthModal
-          mode={modal}
-          onClose={() => setModal(null)}
-          onSwap={() => setModal(modal === "signup" ? "signin" : "signup")}
-        />
-      )}
-      <Nav modal={modal} setModal={setModal} />
+    <Routes>
+      {/* Public */}
+      <Route path="/" element={<Home />} />
+      <Route path="/how-it-works" element={<HowItWorks />} />
+      <Route path="/science" element={<Science />} />
+      <Route path="/pricing" element={<Pricing />} />
+      <Route path="/faq" element={<FAQ />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
 
-      <Routes>
-        <Route path="/" element={user ? <Dashboard /> : <Home score={score} onGetStarted={() => setModal('signup')} />} />
-        <Route path="/features" element={<Features />} />
-        <Route path="/pricing" element={<Pricing openModal={setModal} />} />
-        <Route path="/faq" element={<FAQ openModal={setModal} />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/support" element={<Support />} />
-        <Route path="/privacy" element={<Privacy />} />
-        <Route path="/terms" element={<Terms />} />
-        <Route path="/consent" element={<Consent />} />
-        <Route path="/cookie" element={<Cookie />} />
-        <Route path="/refund" element={<Refund />} />
-        <Route path="/blog" element={<Blog />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
+      {/* Protected App Routes */}
+      <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+      <Route path="/scan" element={<ProtectedRoute><Scan /></ProtectedRoute>} />
+      <Route path="/results" element={<ProtectedRoute><Results /></ProtectedRoute>} />
+      <Route path="/history" element={<ProtectedRoute><History /></ProtectedRoute>} />
+      <Route path="/progress" element={<ProtectedRoute><Progress /></ProtectedRoute>} />
+      <Route path="/insights" element={<ProtectedRoute><Insights /></ProtectedRoute>} />
+      <Route path="/reports" element={<ProtectedRoute><Reports /></ProtectedRoute>} />
+      <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+      <Route path="/upgrade" element={<ProtectedRoute><Upgrade /></ProtectedRoute>} />
 
-        {/* protected routes */}
-        <Route element={<ProtectedRoute redirectTo="/" />}>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/scan" element={<Scan />} />
-          <Route path="/results" element={<Results />} />
-          <Route path="/history" element={<History />} />
-        </Route>
-
-        {/* catch all fallback */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-
-      <Footer />
-    </>
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
 }
-
-function App() {
-  return (
-    <AuthProvider>
-      <Router>
-        <AppContent />
-      </Router>
-    </AuthProvider>
-  );
-}
-
-export default App;

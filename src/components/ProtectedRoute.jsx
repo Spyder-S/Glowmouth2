@@ -1,11 +1,8 @@
-import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from '../AuthContext.jsx';
+import { Navigate } from 'react-router-dom';
+import { useAuth } from '../AuthContext';
 
-export default function ProtectedRoute({ redirectTo = '/' }) {
-  const { user, loading } = useAuth();
-  if (loading) {
-    // simple full-screen loader
-    return <div className="page-loader">Loading...</div>;
-  }
-  return user ? <Outlet /> : <Navigate to={redirectTo} replace />;
+export default function ProtectedRoute({ children }) {
+  const { user } = useAuth();
+  if (!user) return <Navigate to="/login" replace />;
+  return children;
 }

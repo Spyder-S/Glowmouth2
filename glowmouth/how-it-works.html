@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How It Works — GlowMouth</title>
+  <meta name="description" content="A full walkthrough of the GlowMouth process — scan, AI analysis, GlowScore, and dentist sharing.">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- ═══════ NAV ═══════ -->
+<nav class="site-nav" id="site-nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="28" height="28" rx="7" fill="#0D9488"/>
+          <path d="M8.5 17.5 Q14 22.5 19.5 17.5" stroke="white" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+          <path d="M14 8 L14.6 10.2 L16.9 10.5 L15.2 12.1 L15.7 14.4 L14 13.2 L12.3 14.4 L12.8 12.1 L11.1 10.5 L13.4 10.2 Z" fill="white"/>
+        </svg>
+        <span class="nav-logo-text">GlowMouth</span>
+      </a>
+      <div class="nav-links">
+        <a href="how-it-works.html" class="nav-link">How It Works</a>
+        <a href="technology.html"   class="nav-link">Technology</a>
+        <a href="advisors.html"     class="nav-link">Advisors</a>
+        <a href="faq.html"          class="nav-link">FAQ</a>
+      </div>
+      <a href="index.html#waitlist" class="btn-primary">Get Early Access</a>
+      <button class="hamburger" id="hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="how-it-works.html">How It Works</a>
+    <a href="technology.html">Technology</a>
+    <a href="advisors.html">Advisors</a>
+    <a href="faq.html">FAQ</a>
+    <a href="index.html#waitlist" class="btn-primary">Get Early Access</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ═══════ PAGE HERO ═══════ -->
+<section class="page-hero">
+  <div class="container">
+    <span class="label">How It Works</span>
+    <h1>From scan to insight in under two minutes.</h1>
+    <p class="page-lead">GlowMouth's workflow is designed to fit into your existing oral care routine — quick, consistent, and informative.</p>
+  </div>
+</section>
+
+<!-- ═══════ FOUR STEPS ═══════ -->
+<section>
+  <div class="container">
+    <div class="steps-container">
+    <div class="steps-list">
+
+      <!-- Step 1 -->
+      <div class="step">
+        <div class="step-left">
+          <div class="step-circle">01</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <h3>Scan with the QLF device</h3>
+          <p>The GlowMouth device is a compact handheld intraoral camera. Brush as you normally would, then follow the app's guided overlays to capture five standard angles — front, left side, right side, upper arch, and lower arch. The full capture takes under two minutes.</p>
+          <p>The app performs real-time quality checks, detecting blur and poor lighting frame-by-frame. If a frame doesn't meet the threshold, the app prompts a retake before anything uploads.</p>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="step">
+        <div class="step-left">
+          <div class="step-circle">02</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <h3>AI processes the fluorescence data</h3>
+          <p>Your images upload encrypted (TLS 1.3) to GlowMouth's analysis pipeline. A computer vision model trained on QLF intraoral images examines each frame for surface patterns — surfacing signals for plaque-like film, gum tissue changes, and enamel surface characteristics. Analysis typically completes in 30–45 seconds.</p>
+          <p>Per-frame scores are aggregated across all five angles, so no single low-quality frame skews your result. Every result carries a confidence level: High, Medium, or Low.</p>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step">
+        <div class="step-left">
+          <div class="step-circle">03</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <h3>Review your GlowScore, stored and tracked over time</h3>
+          <p>Your GlowScore (1–100) summarizes the AI's assessment across all three indicator categories. The app shows you an oral health map — color-coded by region — identifying which areas registered elevated signals and which indicator is driving the change.</p>
+          <p>The score is stored in your account. You can view your 7-day, 30-day, and 90-day trend at any time. A consistent upward trend as you adjust your routine is the signal to watch, not any single day's number.</p>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="step">
+        <div class="step-left">
+          <div class="step-circle">04</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <h3>Share results with your dentist (optional)</h3>
+          <p>Every scan generates a structured summary — GlowScore, per-indicator readings, confidence level, scan date — exportable as a PDF or shareable via the in-app partner portal. GlowMouth integrates with dental practices in our partner network.</p>
+          <p>Sharing is always optional. GlowMouth provides additional longitudinal data that can supplement what your dentist observes at a twice-yearly visit. It does not replace clinical assessment.</p>
+        </div>
+      </div>
+
+    </div><!-- .steps-list -->
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ GLOWSCORE ═══════ -->
+<section class="section-alt section-border" id="glowscore">
+  <div class="container">
+    <div class="section-header">
+      <span class="label">The GlowScore</span>
+      <h2>What the score measures — and what it doesn't.</h2>
+      <p>Your daily GlowScore is a composite wellness signal, not a clinical measurement. Here is what goes into it, and where it stops.</p>
+    </div>
+
+    <div class="score-grid">
+
+      <!-- Left: ring + range table -->
+      <div>
+        <div class="score-ring-wrap">
+          <!-- viewBox 200×200, r=80, circumference=502.65
+               82%: dasharray=503, dashoffset=503×0.18=90.5 -->
+          <svg viewBox="0 0 200 200" width="200" height="200" fill="none" aria-label="GlowScore ring showing example score of 82" role="img">
+            <circle cx="100" cy="100" r="80" stroke="#E5E7EB" stroke-width="10" fill="none"/>
+            <circle cx="100" cy="100" r="80" stroke="#0D9488" stroke-width="10" fill="none"
+              stroke-dasharray="503"
+              stroke-dashoffset="90.5"
+              stroke-linecap="round"
+              transform="rotate(-90 100 100)"/>
+            <text x="100" y="92"  text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="48" font-weight="600" fill="#111827">82</text>
+            <text x="100" y="116" text-anchor="middle" font-family="'Inter',sans-serif" font-size="12" fill="#6B7280" letter-spacing="0.04em">GlowScore</text>
+            <text x="100" y="133" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="#9CA3AF">example</text>
+          </svg>
+        </div>
+
+        <div class="score-range-table">
+          <div class="score-range-row">
+            <span class="score-dot" style="background:#22C55E;"></span>
+            <span class="score-range-num">71–100</span>
+            <span class="score-range-label">Clear</span>
+          </div>
+          <div class="score-range-row">
+            <span class="score-dot" style="background:#F59E0B;"></span>
+            <span class="score-range-num">41–70</span>
+            <span class="score-range-label">Monitoring</span>
+          </div>
+          <div class="score-range-row">
+            <span class="score-dot" style="background:#F87171;"></span>
+            <span class="score-range-num">1–40</span>
+            <span class="score-range-label">Needs Attention</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: measures + not-measured list -->
+      <div>
+        <h3 style="margin-bottom:20px;">What GlowMouth measures</h3>
+        <p style="font-size:15px;max-width:none;">Three indicator categories are scored per scan. Each is weighted by severity of detected signal.</p>
+
+        <div class="measures-list">
+          <div class="measure-item">
+            <span class="measure-label">Plaque-like film</span>
+            <div class="measure-bar"><div class="measure-fill" style="width:62%;"></div></div>
+          </div>
+          <div class="measure-item">
+            <span class="measure-label">Gum tissue health</span>
+            <div class="measure-bar"><div class="measure-fill" style="width:45%;"></div></div>
+          </div>
+          <div class="measure-item">
+            <span class="measure-label">Enamel surface</span>
+            <div class="measure-bar"><div class="measure-fill" style="width:24%;"></div></div>
+          </div>
+        </div>
+
+        <div class="not-measured">
+          <h4>What GlowMouth does not measure</h4>
+          <div class="does-not-item">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#F87171" stroke-width="1.5"/><path d="M7 7 L13 13 M13 7 L7 13" stroke="#F87171" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span>Cavities — requires X-ray for confirmation</span>
+          </div>
+          <div class="does-not-item">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#F87171" stroke-width="1.5"/><path d="M7 7 L13 13 M13 7 L7 13" stroke="#F87171" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span>Bone density or bone loss</span>
+          </div>
+          <div class="does-not-item">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#F87171" stroke-width="1.5"/><path d="M7 7 L13 13 M13 7 L7 13" stroke="#F87171" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span>Cancer screening of any kind</span>
+          </div>
+          <div class="does-not-item">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#F87171" stroke-width="1.5"/><path d="M7 7 L13 13 M13 7 L7 13" stroke="#F87171" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span>Gum pocket depth — requires probing</span>
+          </div>
+          <div class="does-not-item">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#F87171" stroke-width="1.5"/><path d="M7 7 L13 13 M13 7 L7 13" stroke="#F87171" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span>Tooth alignment or bite issues</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ CTA ═══════ -->
+<section class="section-border">
+  <div class="container">
+    <span class="label">Get Started</span>
+    <h2 style="margin-top:8px;margin-bottom:16px;">Ready to see your oral health more clearly?</h2>
+    <p>Join the waitlist for early access to the GlowMouth device and app.</p>
+    <div class="btn-group" style="margin-top:32px;">
+      <a href="index.html#waitlist" class="btn-primary">Get Early Access</a>
+      <a href="technology.html"     class="btn-secondary">Learn about the technology</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ═══════ FOOTER ═══════ -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="28" height="28" rx="7" fill="#0D9488"/>
+            <path d="M8.5 17.5 Q14 22.5 19.5 17.5" stroke="white" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+            <path d="M14 8 L14.6 10.2 L16.9 10.5 L15.2 12.1 L15.7 14.4 L14 13.2 L12.3 14.4 L12.8 12.1 L11.1 10.5 L13.4 10.2 Z" fill="white"/>
+          </svg>
+          <span class="footer-logo-text">GlowMouth</span>
+        </a>
+        <p>Oral health intelligence, built for how you actually live.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <a href="how-it-works.html">How It Works</a>
+        <a href="technology.html">Technology</a>
+        <a href="faq.html#glowscore">GlowScore</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="advisors.html">Advisors</a>
+        <a href="faq.html">FAQ</a>
+        <a href="mailto:hello@glowmouth.com">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-disclaimer">GlowMouth is not a diagnostic device and is not intended to replace professional dental care.</p>
+      <p class="footer-copy">&copy; 2025 GlowMouth. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

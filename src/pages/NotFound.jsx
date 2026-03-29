@@ -1,14 +1,12 @@
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export default function NotFound() {
-  const navigate = useNavigate();
   return (
-    <div className="static-page">
-      <section className="wrap" style={{ padding: '120px 0', textAlign: 'center' }}>
-        <h1>404 — Page not found</h1>
-        <p>The page you’re looking for doesn’t exist or has been moved.</p>
-        <button className="btn btn-teal" onClick={() => navigate('/')}>Go home</button>
-      </section>
+    <div className="not-found">
+      <div className="not-found-num">404</div>
+      <h2 style={{ fontFamily: "'DM Serif Display',serif", fontSize: 32, color: 'var(--heading)', marginBottom: 12 }}>Page not found.</h2>
+      <p style={{ fontSize: 16, color: 'var(--muted)', marginBottom: 32 }}>The page you're looking for doesn't exist or has moved.</p>
+      <Link to="/" className="btn btn-primary">Back to Home</Link>
     </div>
   );
 }
