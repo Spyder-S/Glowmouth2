@@ -46,7 +46,11 @@
       "Bash(curl -s \"http://localhost:5174/src/App.jsx\")",
       "Bash(find \"/Users/anishranga/Downloads\" -name \".env\" -not -path \"*/node_modules/*\" 2>/dev/null)",
       "Bash(pkill -f \"vite --port 5174\")",
-      "Bash(git branch *)"
+      "Bash(git branch *)",
+      "Bash(git rm *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git pull *)",
+      "Bash(git commit *)"
     ]
   }
 }
