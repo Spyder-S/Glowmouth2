@@ -247,6 +247,23 @@ consumes the component through that interface, so nothing else needs to change.
 
 ---
 
+## Brand assets to drop in
+
+Both are optional. The site is built so that a missing file is never a broken
+image: the section simply stands on its typography until the file exists.
+
+| Save as | What it should be |
+| --- | --- |
+| `public/team.jpg` | The four of you at the podium. Roughly 2000px wide, landscape. It is cropped to 16:8, so leave a little headroom. |
+| `public/logo-mark.svg` | **The mark only.** No dark tile, no wordmark. The site sets the name in its own typeface next to it. |
+
+Export the mark on its own, without the dark rounded square and without the
+word GlowMouth. The nav puts it directly on the warm paper background and has
+to invert it over the dark imaging section, so a baked-in dark tile would sit
+there as a black block and fight the restraint the rest of the page is built on.
+
+Drop the files in `public/`, commit, and push. Nothing else needs changing.
+
 ## Before launch
 
 - Replace `public/og-image.png`. The meta tags reference it but the file does

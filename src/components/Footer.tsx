@@ -1,3 +1,5 @@
+import { Wordmark } from './Wordmark'
+
 const LINKS = [
   { label: 'About', href: '#thinking' },
   { label: 'Privacy', href: '/privacy/' },
@@ -10,7 +12,7 @@ export function Footer() {
       <div className="interval-rule" />
 
       <div className="mt-7 flex flex-wrap items-baseline justify-between gap-x-8 gap-y-4">
-        <span className="text-small font-medium text-ink">GlowMouth</span>
+        <Wordmark />
 
         <nav aria-label="Footer" className="flex items-baseline gap-7">
           {LINKS.map((link) => (

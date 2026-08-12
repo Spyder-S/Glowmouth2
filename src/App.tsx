@@ -7,6 +7,7 @@ import { BetweenVisits } from './sections/BetweenVisits'
 import { ImagingExperience } from './sections/ImagingExperience'
 import { Manifesto } from './sections/Manifesto'
 import { ProductStory } from './sections/ProductStory'
+import { Founders } from './sections/Founders'
 import { PreLaunch } from './sections/PreLaunch'
 import { FinalMoment } from './sections/FinalMoment'
 
@@ -21,6 +22,7 @@ export default function App() {
         <ImagingExperience />
         <Manifesto />
         <ProductStory />
+        <Founders />
         <PreLaunch />
         <WaitlistForm />
         <FinalMoment />

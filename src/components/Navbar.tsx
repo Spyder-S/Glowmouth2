@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
+import { Wordmark } from './Wordmark'
 
 const LINKS = [
   { label: 'Our thinking', href: '#thinking' },
@@ -89,12 +90,8 @@ export function Navbar() {
           aria-label="Primary"
           className="shell flex h-[68px] items-center justify-between md:h-[76px]"
         >
-          <a
-            href="#top"
-            className="-my-3 flex min-h-[44px] items-center py-3 text-[0.98rem] font-medium tracking-[-0.022em]"
-            style={{ color: tone, transition: 'color 500ms ease' }}
-          >
-            GlowMouth
+          <a href="#top" className="-my-3 flex min-h-[44px] items-center py-3" aria-label="GlowMouth, back to top">
+            <Wordmark tone={tone} />
           </a>
 
           <div className="hidden items-center gap-9 md:flex">
