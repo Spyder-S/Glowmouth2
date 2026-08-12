@@ -106,7 +106,7 @@ for each one.
 | `EMAILJS_TEMPLATE_ID` | EmailJS → Email Templates |
 | `EMAILJS_PUBLIC_KEY` | EmailJS → Account → General → Public Key |
 | `EMAILJS_PRIVATE_KEY` | EmailJS → Account → General → Private Key |
-| `ALLOWED_ORIGIN` | Optional. Your live origin, e.g. `https://glowmouth.com` |
+| `ALLOWED_ORIGIN` | Optional. Your live origin, e.g. `https://glowmouth.org` |
 
 Redeploy after adding them. Environment variables are only read at deploy time,
 so a deploy that ran before you added them will not pick them up.
@@ -247,6 +247,66 @@ consumes the component through that interface, so nothing else needs to change.
 
 ---
 
+## 6. Point glowmouth.org at it
+
+Vercel gives every project a `.vercel.app` URL. Attaching your own domain
+replaces it; nothing about the code changes.
+
+### In Vercel
+
+**Settings → Domains → Add.** Enter `glowmouth.org`, then add `www.glowmouth.org`
+as well. Vercel will offer to redirect one to the other: take it, and make the
+bare `glowmouth.org` the primary. Two addresses serving identical content splits
+your search ranking between them, so one has to be canonical, and the canonical
+tags in `index.html` already point at the bare domain.
+
+Vercel then shows the DNS records it needs. Do not guess these; copy what it
+shows you, because the values differ by account.
+
+### At your registrar
+
+Two ways, and the second is usually less trouble.
+
+**Option A, change the nameservers.** Replace your registrar's nameservers with
+the ones Vercel lists (typically `ns1.vercel-dns.com` and `ns2.vercel-dns.com`).
+Vercel then manages all DNS for the domain. Simplest, but it moves every record,
+so do not use this if the domain already handles email or anything else.
+
+**Option B, add records at your registrar.** Keep your existing DNS and add:
+
+| Type | Name | Value |
+| --- | --- | --- |
+| `A` | `@` | the IP Vercel shows (usually `76.76.21.21`) |
+| `CNAME` | `www` | `cname.vercel-dns.com` |
+
+Delete any existing `A` or `CNAME` on `@` and `www` first, or the old ones win.
+
+### Then wait
+
+DNS usually propagates in minutes but can take up to 48 hours. Vercel issues the
+HTTPS certificate automatically once it sees the records, and the domain shows a
+green check when it is done. Until then it may show "Invalid Configuration",
+which during the first hour usually means "not propagated yet" rather than
+"wrong".
+
+### After it goes live
+
+1. Set `ALLOWED_ORIGIN` to `https://glowmouth.org` in Vercel and redeploy. Until
+   the domain works, leave it unset; a mismatch blocks the form.
+2. Confirm `https://glowmouth.org/api/waitlist` still reports `ok: true`.
+3. Submit the form once on the real domain.
+
+### One thing that is not automatic
+
+`hello@glowmouth.org` appears in the footer and, more importantly, on the
+privacy page as the address people write to in order to have their data deleted.
+Buying the domain does not create that mailbox. Set up email forwarding at your
+registrar, which is usually free, and point it at an inbox you actually read.
+Until you do, that address bounces and the promise on the privacy page is one
+you cannot keep.
+
+---
+
 ## Brand assets to drop in
 
 Both are optional. The site is built so that a missing file is never a broken
@@ -290,8 +350,8 @@ those two files and the favicon in `index.html`.
   not exist yet; social previews will be blank until it does.
 - Add `public/apple-touch-icon.png` and real icons in `site.webmanifest`.
 - Update the canonical origin in `index.html` and `src/lib/site.ts` if the
-  domain is not `glowmouth.com`.
-- Point `hello@glowmouth.com` at a mailbox you actually read. It appears in the
+  domain is not `glowmouth.org`.
+- Point `hello@glowmouth.org` at a mailbox you actually read. It appears in the
   footer and in `public/privacy/index.html`.
 - Re-check the WHO figure cited in the *scale of it* section against the current
   edition of the Global Oral Health Status Report.

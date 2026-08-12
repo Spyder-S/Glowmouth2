@@ -3,7 +3,7 @@ import { Wordmark } from './Wordmark'
 const LINKS = [
   { label: 'About', href: '#thinking' },
   { label: 'Privacy', href: '/privacy/' },
-  { label: 'Contact', href: 'mailto:hello@glowmouth.com' },
+  { label: 'Contact', href: 'mailto:hello@glowmouth.org' },
 ]
 
 export function Footer() {

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://glowmouth.com/sitemap.xml
+Sitemap: https://glowmouth.org/sitemap.xml
