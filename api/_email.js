@@ -16,13 +16,30 @@
 
 const EMAILJS_ENDPOINT = 'https://api.emailjs.com/api/v1.0/email/send'
 
+/**
+ * Which of the four variables are present. Booleans only, never values, so this
+ * is safe to return from the public health check.
+ *
+ * All four are required. Missing any one of them means EmailJS will reject the
+ * call, so the send is skipped rather than attempted and failed.
+ */
+export function emailStatus() {
+  const present = {
+    EMAILJS_SERVICE_ID: Boolean(process.env.EMAILJS_SERVICE_ID),
+    EMAILJS_TEMPLATE_ID: Boolean(process.env.EMAILJS_TEMPLATE_ID),
+    EMAILJS_PUBLIC_KEY: Boolean(process.env.EMAILJS_PUBLIC_KEY),
+    EMAILJS_PRIVATE_KEY: Boolean(process.env.EMAILJS_PRIVATE_KEY),
+  }
+
+  const missing = Object.entries(present)
+    .filter(([, set]) => !set)
+    .map(([name]) => name)
+
+  return { present, missing, configured: missing.length === 0 }
+}
+
 export function emailConfigured() {
-  return Boolean(
-    process.env.EMAILJS_SERVICE_ID &&
-      process.env.EMAILJS_TEMPLATE_ID &&
-      process.env.EMAILJS_PUBLIC_KEY &&
-      process.env.EMAILJS_PRIVATE_KEY,
-  )
+  return emailStatus().configured
 }
 
 /**

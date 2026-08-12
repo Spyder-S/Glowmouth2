@@ -97,6 +97,51 @@ delete process.env.SUPABASE_SERVICE_ROLE_KEY
   check('response carries a debugging code', res.body?.code === 'not_configured', JSON.stringify(res.body))
 }
 
+// ── naming the missing EmailJS variables ────────────────────────────────────
+{
+  const res = await call({ method: 'GET' })
+  check('all four EmailJS variables are reported missing', res.body?.email_missing?.length === 4, JSON.stringify(res.body?.email_missing))
+  check(
+    'the note says signups still work',
+    res.body?.email_note?.includes('Signups are saved'),
+    res.body?.email_note,
+  )
+}
+
+{
+  // The state a half-finished setup lands in: three of four filled.
+  process.env.EMAILJS_SERVICE_ID = 'service_test'
+  process.env.EMAILJS_TEMPLATE_ID = 'template_test'
+  process.env.EMAILJS_PUBLIC_KEY = 'public_test'
+
+  const res = await call({ method: 'GET' })
+  check(
+    'a partial setup names only what is left',
+    JSON.stringify(res.body?.email_missing) === JSON.stringify(['EMAILJS_PRIVATE_KEY']),
+    JSON.stringify(res.body?.email_missing),
+  )
+  check(
+    'a partial setup says all four are needed',
+    res.body?.email_note?.includes('all four'),
+    res.body?.email_note,
+  )
+  check('a partial setup is still not configured', res.body?.email_configured === false)
+  check(
+    'no EmailJS values are echoed back',
+    !JSON.stringify(res.body).includes('service_test') && !JSON.stringify(res.body).includes('public_test'),
+    JSON.stringify(res.body),
+  )
+
+  process.env.EMAILJS_PRIVATE_KEY = 'private_test'
+  const done = await call({ method: 'GET' })
+  check('a complete setup reports configured', done.body?.email_configured === true)
+  check('a complete setup lists nothing missing', done.body?.email_missing === undefined)
+
+  for (const key of ['EMAILJS_SERVICE_ID', 'EMAILJS_TEMPLATE_ID', 'EMAILJS_PUBLIC_KEY', 'EMAILJS_PRIVATE_KEY']) {
+    delete process.env[key]
+  }
+}
+
 // ── validation still runs before any of that ────────────────────────────────
 {
   const res = await call({ method: 'POST', body: { email: 'nonsense' } })

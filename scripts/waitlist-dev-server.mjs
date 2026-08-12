@@ -19,7 +19,7 @@ import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { randomUUID } from 'node:crypto'
 import { CORS, MESSAGES, createThrottle, parseSignup } from '../api/_core.js'
-import { emailConfigured, sendConfirmation } from '../api/_email.js'
+import { emailConfigured, emailStatus, sendConfirmation } from '../api/_email.js'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const dbPath = resolve(root, '.local/waitlist.db')
@@ -87,12 +87,14 @@ const server = createServer(async (req, res) => {
 
   // Mirrors the health check in api/waitlist.js so the shape can be tested.
   if (req.method === 'GET') {
+    const email = emailStatus()
     send(res, 200, {
       ok: true,
       supabase_url_set: false,
       supabase_service_key_set: false,
-      email_configured: emailConfigured(),
+      email_configured: email.configured,
       table_reachable: true,
+      ...(email.configured ? {} : { email_missing: email.missing }),
       note: 'Local stand-in server: signups go to SQLite, not Supabase.',
     })
     return

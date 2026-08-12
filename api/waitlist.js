@@ -13,7 +13,7 @@
 
 import { createClient } from '@supabase/supabase-js'
 import { CORS, MESSAGES, createThrottle, parseSignup } from './_core.js'
-import { emailConfigured, sendConfirmation } from './_email.js'
+import { emailStatus, sendConfirmation } from './_email.js'
 
 const throttled = createThrottle({ limit: 8, windowMs: 60_000 })
 
@@ -70,12 +70,23 @@ async function health(res) {
   const supabaseUrl = process.env.SUPABASE_URL ?? process.env.VITE_SUPABASE_URL
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
+  const email = emailStatus()
+
   const report = {
     ok: false,
     supabase_url_set: Boolean(supabaseUrl),
     supabase_service_key_set: Boolean(serviceKey),
-    email_configured: emailConfigured(),
+    email_configured: email.configured,
     table_reachable: false,
+  }
+
+  // Name the specific variables that are missing rather than one blanket false.
+  if (!email.configured) {
+    report.email_missing = email.missing
+    report.email_note =
+      email.missing.length === 4
+        ? 'No EmailJS variables are set. Signups are saved; no confirmation email is sent.'
+        : `Partially configured. EmailJS needs all four. Still missing: ${email.missing.join(', ')}.`
   }
 
   if (!supabaseUrl || !serviceKey) {
@@ -100,9 +111,6 @@ async function health(res) {
 
     report.ok = true
     report.table_reachable = true
-    if (!report.email_configured) {
-      report.note = 'Signups will be saved. No confirmation email will be sent until the EMAILJS_* variables are set.'
-    }
     return send(res, 200, report)
   } catch (cause) {
     const detail = diagnose(cause)
