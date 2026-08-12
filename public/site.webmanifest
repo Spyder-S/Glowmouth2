@@ -1,0 +1,10 @@
+{
+  "name": "GlowMouth",
+  "short_name": "GlowMouth",
+  "description": "A new way to visualize and follow your oral health between dental visits.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F5F2EC",
+  "theme_color": "#F5F2EC",
+  "icons": []
+}
