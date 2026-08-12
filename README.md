@@ -252,17 +252,37 @@ consumes the component through that interface, so nothing else needs to change.
 Both are optional. The site is built so that a missing file is never a broken
 image: the section simply stands on its typography until the file exists.
 
-| Save as | What it should be |
-| --- | --- |
-| `public/team.jpg` | The four of you at the podium. Roughly 2000px wide, landscape. It is cropped to 16:8, so leave a little headroom. |
-| `public/logo-mark.svg` | **The mark only.** No dark tile, no wordmark. The site sets the name in its own typeface next to it. |
+### The team photograph
 
-Export the mark on its own, without the dark rounded square and without the
-word GlowMouth. The nav puts it directly on the warm paper background and has
-to invert it over the dark imaging section, so a baked-in dark tile would sit
-there as a black block and fight the restraint the rest of the page is built on.
+Save the podium photo here, with exactly this name:
 
-Drop the files in `public/`, commit, and push. Nothing else needs changing.
+```
+/Users/vanshgoel/glowmouth-prelaunch/public/team.jpg
+```
+
+Landscape, ideally around 2000px wide. It is cropped to 16:8 and centred, so
+leave a little room above your heads. Then:
+
+```bash
+git -C /Users/vanshgoel/glowmouth-prelaunch add public/team.jpg && git -C /Users/vanshgoel/glowmouth-prelaunch commit -m "Add team photograph" && git -C /Users/vanshgoel/glowmouth-prelaunch push
+```
+
+Until that file exists the founders section simply runs without it. No broken
+image ever appears.
+
+### The mark
+
+`src/components/LogoMark.tsx` draws the smile and the spark inline, in
+`currentColor`, which is what lets the nav render it in ink on warm paper and
+flip it to light over the dark imaging section without swapping files.
+
+Standalone copies live at `public/logo-mark.svg` (ink, for light backgrounds)
+and `public/logo-mark-light.svg` (paper, for dark ones), for decks, avatars and
+anywhere outside this app. The favicon carries the same artwork on the dark
+brand tile.
+
+To change the mark, edit the two paths in `LogoMark.tsx` and mirror them into
+those two files and the favicon in `index.html`.
 
 ## Before launch
 
