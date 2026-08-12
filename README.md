@@ -165,13 +165,48 @@ To move to a different provider later, rewrite `sendConfirmation()` in
 
 ## 5. Check it works in production
 
-Join the waitlist on the live site with a real address, then in Supabase open
-**Table Editor → waitlist**. The row should be there. Submit the same address
-again and the site should say *You're already with us* rather than showing an
-error.
+**Before testing the form, open this in a browser:**
 
-If a signup fails, open the deployment in Vercel and read **Logs**. The function
-logs the reason for every failure, including email problems.
+```
+https://your-site.vercel.app/api/waitlist
+```
+
+That is a configuration check. It returns JSON telling you exactly what is and
+is not wired up, and it never returns a key, a signup, or a row count.
+
+When everything is ready:
+
+```json
+{ "ok": true, "supabase_url_set": true, "supabase_service_key_set": true,
+  "email_configured": true, "table_reachable": true }
+```
+
+When something is missing, `ok` is `false` and `fix` says what to do. The codes:
+
+| `code` | Meaning |
+| --- | --- |
+| *(absent, `supabase_url_set` false)* | Env vars not set, or set after the last deploy. Add them and redeploy. |
+| `table_missing` | The SQL migration in step 2 has not been run. |
+| `permission_denied` | You used the anon key. It must be the `service_role` key. |
+| `bad_key` | Supabase rejected the key. Re-copy it. |
+| `unreachable` | `SUPABASE_URL` is wrong. It must be the full `https://<ref>.supabase.co`. |
+
+Once it reports `ok: true`, join the waitlist with a real address and check
+**Table Editor → waitlist** in Supabase. Submit the same address again and the
+site should say *You're already with us* rather than showing an error.
+
+A failed signup shows visitors a plain message, by design. The specific reason
+goes to the Vercel function logs, and the response carries the same `code` as
+above in its JSON body if you look in the browser's network tab.
+
+### "Something went wrong on our end"
+
+That is the generic 500. It means the function ran but could not finish. Open
+`/api/waitlist` as above; it will tell you which of the causes it is. In almost
+every case it is one of two things: the environment variables are not set, or
+they were added *after* the last deploy and Vercel has not picked them up.
+Environment variables are read at deploy time only, so adding them is never
+enough on its own. Redeploy.
 
 ---
 

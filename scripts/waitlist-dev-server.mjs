@@ -85,6 +85,19 @@ const server = createServer(async (req, res) => {
     return
   }
 
+  // Mirrors the health check in api/waitlist.js so the shape can be tested.
+  if (req.method === 'GET') {
+    send(res, 200, {
+      ok: true,
+      supabase_url_set: false,
+      supabase_service_key_set: false,
+      email_configured: emailConfigured(),
+      table_reachable: true,
+      note: 'Local stand-in server: signups go to SQLite, not Supabase.',
+    })
+    return
+  }
+
   if (req.method !== 'POST') {
     send(res, 405, { error: 'Method not allowed.' })
     return

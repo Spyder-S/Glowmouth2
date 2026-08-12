@@ -96,7 +96,25 @@ for (const bad of [
 
 {
   const response = await fetch(BASE, { method: 'GET' })
-  check('GET is not allowed', response.status === 405, `got ${response.status}`)
+  const body = await response.json()
+  check('GET returns a configuration report', response.status === 200, `got ${response.status}`)
+  check(
+    'health report names every dependency',
+    ['ok', 'supabase_url_set', 'supabase_service_key_set', 'email_configured', 'table_reachable'].every(
+      (key) => key in body,
+    ),
+    JSON.stringify(body),
+  )
+  check(
+    'health report leaks no secrets or signups',
+    !JSON.stringify(body).match(/eyJ|@|service_role/),
+    JSON.stringify(body),
+  )
+}
+
+{
+  const response = await fetch(BASE, { method: 'PUT' })
+  check('other methods are not allowed', response.status === 405, `got ${response.status}`)
 }
 
 // ── the happy path ──────────────────────────────────────────────────────────
