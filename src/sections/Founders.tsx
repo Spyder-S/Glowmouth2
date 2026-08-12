@@ -31,19 +31,25 @@ export function Founders() {
 
       {hasPhoto && (
         <div className="shell pt-[9vh] md:pt-[11vh]">
-          <Reveal amount={0.15}>
-            <figure className="m-0">
-              <img
-                src="/team.jpg"
-                alt="The four GlowMouth founders presenting at a podium."
-                loading="lazy"
-                decoding="async"
-                onError={() => setHasPhoto(false)}
-                className="w-full"
-                style={{ borderRadius: '2px', aspectRatio: '16 / 8', objectFit: 'cover' }}
-              />
-            </figure>
-          </Reveal>
+          <div className="md:grid md:grid-cols-12">
+            {/* Right-anchored, to counterweight the left-anchored headline.
+                Held near its native 656px so it is never upscaled into mush. */}
+            <Reveal amount={0.15} className="md:col-span-7 md:col-start-6">
+              <figure className="m-0" style={{ maxWidth: 656 }}>
+                <img
+                  src="/team.jpg"
+                  alt="The four GlowMouth founders presenting at a podium."
+                  width={656}
+                  height={434}
+                  loading="lazy"
+                  decoding="async"
+                  onError={() => setHasPhoto(false)}
+                  className="w-full"
+                  style={{ borderRadius: '2px', aspectRatio: '3 / 2', objectFit: 'cover' }}
+                />
+              </figure>
+            </Reveal>
+          </div>
         </div>
       )}
 
