@@ -83,7 +83,11 @@ async function health(res) {
   // Which build answered this. If it has not changed since you edited the
   // environment variables, the redeploy did not happen and nothing else here
   // will have changed either.
+  // VERCEL_URL is unique per deployment, so it changes even when the same
+  // commit is redeployed. The commit alone does not, which makes it useless
+  // for answering "did my redeploy actually happen".
   report.deployment = {
+    id: (process.env.VERCEL_URL ?? 'local').split('.')[0],
     commit: (process.env.VERCEL_GIT_COMMIT_SHA ?? 'local').slice(0, 7),
     environment: process.env.VERCEL_ENV ?? 'local',
   }
