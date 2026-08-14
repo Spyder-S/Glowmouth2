@@ -14,6 +14,8 @@
  * still succeeds. Email is never allowed to fail a database write.
  */
 
+import { findMisnamed, isSet } from './_core.js'
+
 const EMAILJS_ENDPOINT = 'https://api.emailjs.com/api/v1.0/email/send'
 
 /**
@@ -23,19 +25,25 @@ const EMAILJS_ENDPOINT = 'https://api.emailjs.com/api/v1.0/email/send'
  * All four are required. Missing any one of them means EmailJS will reject the
  * call, so the send is skipped rather than attempted and failed.
  */
-export function emailStatus() {
+export function emailStatus(env = process.env) {
   const present = {
-    EMAILJS_SERVICE_ID: Boolean(process.env.EMAILJS_SERVICE_ID),
-    EMAILJS_TEMPLATE_ID: Boolean(process.env.EMAILJS_TEMPLATE_ID),
-    EMAILJS_PUBLIC_KEY: Boolean(process.env.EMAILJS_PUBLIC_KEY),
-    EMAILJS_PRIVATE_KEY: Boolean(process.env.EMAILJS_PRIVATE_KEY),
+    EMAILJS_SERVICE_ID: isSet(env.EMAILJS_SERVICE_ID),
+    EMAILJS_TEMPLATE_ID: isSet(env.EMAILJS_TEMPLATE_ID),
+    EMAILJS_PUBLIC_KEY: isSet(env.EMAILJS_PUBLIC_KEY),
+    EMAILJS_PRIVATE_KEY: isSet(env.EMAILJS_PRIVATE_KEY),
   }
 
   const missing = Object.entries(present)
     .filter(([, set]) => !set)
     .map(([name]) => name)
 
-  return { present, missing, configured: missing.length === 0 }
+  // For anything missing, check whether it was typed under another name.
+  const misnamed = missing
+    .map((name) => ({ expected: name, found: findMisnamed(name, env) }))
+    .filter((entry) => entry.found)
+    .map((entry) => `${entry.found.name} ${entry.found.reason}, expected ${entry.expected}`)
+
+  return { present, missing, misnamed, configured: missing.length === 0 }
 }
 
 export function emailConfigured() {

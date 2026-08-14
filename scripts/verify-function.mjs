@@ -142,6 +142,66 @@ delete process.env.SUPABASE_SERVICE_ROLE_KEY
   }
 }
 
+// ── telling "never added" apart from "typed wrong" ──────────────────────────
+{
+  const res = await call({ method: 'GET' })
+  check(
+    'a truly absent variable says so, and points at redeploy',
+    res.body?.email_note?.includes('needs a redeploy'),
+    res.body?.email_note,
+  )
+  check('no false near-match is reported', res.body?.email_misnamed === undefined)
+}
+
+{
+  process.env.EMAILJS_SERVICE_ID = 'service_test'
+  process.env.EMAILJS_TEMPLATE_ID = 'template_test'
+  process.env.EMAILJS_PUBLIC_KEY = 'public_test'
+
+  // The mistakes people actually make in a dashboard.
+  const typos = [
+    ['EMAIL_JS_PRIVATE_KEY', 'is spelled differently'],
+    ['VITE_EMAILJS_PRIVATE_KEY', 'has an extra prefix'],
+    ['emailjs_private_key', 'is spelled differently'],
+    ['EMAILJS_PRIVATE_KEY ', 'has leading or trailing whitespace'],
+  ]
+
+  for (const [typo, reason] of typos) {
+    process.env[typo] = 'value_that_must_not_leak'
+    const res = await call({ method: 'GET' })
+    check(
+      `catches ${JSON.stringify(typo)}`,
+      res.body?.email_misnamed?.[0]?.includes(typo.trim()) &&
+        res.body.email_misnamed[0].includes(reason),
+      JSON.stringify(res.body?.email_misnamed),
+    )
+    check(
+      `does not leak the value of ${JSON.stringify(typo)}`,
+      !JSON.stringify(res.body).includes('value_that_must_not_leak'),
+    )
+    delete process.env[typo]
+  }
+
+  // Set, but blank: shows as filled in the dashboard and behaves as absent.
+  process.env.EMAILJS_PRIVATE_KEY = '   '
+  const blank = await call({ method: 'GET' })
+  check(
+    'catches a variable that is set but empty',
+    blank.body?.email_misnamed?.[0]?.includes('is set but empty'),
+    JSON.stringify(blank.body?.email_misnamed),
+  )
+  delete process.env.EMAILJS_PRIVATE_KEY
+
+  for (const key of ['EMAILJS_SERVICE_ID', 'EMAILJS_TEMPLATE_ID', 'EMAILJS_PUBLIC_KEY']) {
+    delete process.env[key]
+  }
+}
+
+{
+  const res = await call({ method: 'GET' })
+  check('health check reports which build answered', Boolean(res.body?.deployment?.commit), JSON.stringify(res.body?.deployment))
+}
+
 // ── validation still runs before any of that ────────────────────────────────
 {
   const res = await call({ method: 'POST', body: { email: 'nonsense' } })

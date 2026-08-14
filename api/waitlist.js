@@ -12,7 +12,7 @@
  */
 
 import { createClient } from '@supabase/supabase-js'
-import { CORS, MESSAGES, createThrottle, parseSignup } from './_core.js'
+import { CORS, MESSAGES, createThrottle, isSet, parseSignup } from './_core.js'
 import { emailStatus, sendConfirmation } from './_email.js'
 
 const throttled = createThrottle({ limit: 8, windowMs: 60_000 })
@@ -74,10 +74,18 @@ async function health(res) {
 
   const report = {
     ok: false,
-    supabase_url_set: Boolean(supabaseUrl),
-    supabase_service_key_set: Boolean(serviceKey),
+    supabase_url_set: isSet(supabaseUrl),
+    supabase_service_key_set: isSet(serviceKey),
     email_configured: email.configured,
     table_reachable: false,
+  }
+
+  // Which build answered this. If it has not changed since you edited the
+  // environment variables, the redeploy did not happen and nothing else here
+  // will have changed either.
+  report.deployment = {
+    commit: (process.env.VERCEL_GIT_COMMIT_SHA ?? 'local').slice(0, 7),
+    environment: process.env.VERCEL_ENV ?? 'local',
   }
 
   // Name the specific variables that are missing rather than one blanket false.
@@ -87,6 +95,16 @@ async function health(res) {
       email.missing.length === 4
         ? 'No EmailJS variables are set. Signups are saved; no confirmation email is sent.'
         : `Partially configured. EmailJS needs all four. Still missing: ${email.missing.join(', ')}.`
+
+    // A variable typed under a slightly different name looks identical to a
+    // variable that was never added at all. Tell them apart.
+    if (email.misnamed.length > 0) {
+      report.email_misnamed = email.misnamed
+      report.email_note += ` Found a close match: ${email.misnamed.join('; ')}. Rename it and redeploy.`
+    } else {
+      report.email_note +=
+        ' No variable with a similar name exists in this deployment, so either it was not added, or it was added after this build and needs a redeploy.'
+    }
   }
 
   if (!supabaseUrl || !serviceKey) {

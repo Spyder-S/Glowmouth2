@@ -87,6 +87,49 @@ export function createThrottle({ limit = 8, windowMs = 60_000 } = {}) {
   }
 }
 
+/**
+ * A variable counts as set only if it holds something other than whitespace.
+ * A dashboard field saved with a stray space looks filled in and behaves as
+ * empty, which is the worst of both: the check passes and every call fails.
+ */
+export const isSet = (value) => typeof value === 'string' && value.trim().length > 0
+
+const normalizeName = (name) => name.toUpperCase().replace(/[^A-Z0-9]/g, '')
+
+/**
+ * Looks for a variable that was probably meant to be `expected` but was typed
+ * differently: EMAIL_JS_PRIVATE_KEY, VITE_EMAILJS_PRIVATE_KEY, a trailing
+ * space, lowercase, and so on.
+ *
+ * Returns { name, reason } or null. Only ever returns the *name* of a variable,
+ * never its value, so this is safe to surface publicly.
+ */
+export function findMisnamed(expected, env = process.env) {
+  const target = normalizeName(expected)
+
+  for (const key of Object.keys(env)) {
+    if (key === expected) continue
+
+    const normalized = normalizeName(key)
+    const looksLikeTarget =
+      normalized === target ||
+      (normalized.endsWith(target) && normalized.length - target.length <= 6)
+
+    if (!looksLikeTarget) continue
+
+    if (key.trim() !== key) return { name: key, reason: 'has leading or trailing whitespace' }
+    if (normalized === target) return { name: key, reason: 'is spelled differently' }
+    return { name: key, reason: 'has an extra prefix' }
+  }
+
+  // Present, but blank. Looks set in the dashboard and behaves as missing.
+  if (expected in env && String(env[expected]).trim() === '') {
+    return { name: expected, reason: 'is set but empty' }
+  }
+
+  return null
+}
+
 export const CORS = {
   'Access-Control-Allow-Origin': process.env.ALLOWED_ORIGIN ?? '*',
   'Access-Control-Allow-Headers': 'content-type',
