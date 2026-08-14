@@ -219,6 +219,32 @@ delete process.env.SUPABASE_SERVICE_ROLE_KEY
   check('preflight carries CORS headers', Boolean(res.headers['Access-Control-Allow-Origin']))
 }
 
+// ── a configured but unreachable database ───────────────────────────────────
+// If the function throws instead of returning, Vercel emits its own 500 with no
+// JSON body, and the visitor sees exactly the generic message. So the failure
+// path has to be proven to return rather than crash.
+{
+  process.env.SUPABASE_URL = 'https://nonexistent-project-selftest.supabase.co'
+  process.env.SUPABASE_SERVICE_ROLE_KEY = 'not-a-real-key'
+
+  const res = await call({ method: 'POST', body: { email: 'unreachable@example.com' } })
+  check('an unreachable database returns rather than throws', res.statusCode === 500, String(res.statusCode))
+  check('and still carries a JSON body', typeof res.body?.error === 'string', JSON.stringify(res.body))
+  check('and carries a diagnosis code', typeof res.body?.code === 'string', JSON.stringify(res.body))
+
+  const health = await call({ method: 'GET' })
+  check('health check survives an unreachable database', health.statusCode === 200, String(health.statusCode))
+  check('health check reports it is not ok', health.body?.ok === false)
+
+  const probed = await call({ method: 'GET', url: '/api/waitlist?probe=1' })
+  check('probe survives an unreachable database', probed.statusCode === 200, String(probed.statusCode))
+  check('probe reports the insert failed', probed.body?.insert_ok === false, JSON.stringify(probed.body))
+  check('probe names a cause', typeof probed.body?.code === 'string', JSON.stringify(probed.body))
+
+  delete process.env.SUPABASE_URL
+  delete process.env.SUPABASE_SERVICE_ROLE_KEY
+}
+
 // ── the diagnosis table ─────────────────────────────────────────────────────
 console.log('\ndiagnosis of database failures\n')
 

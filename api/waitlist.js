@@ -11,6 +11,7 @@
  *   400 { error }   405 { error }   429 { error }   500 { error }
  */
 
+import { randomUUID } from 'node:crypto'
 import { createClient } from '@supabase/supabase-js'
 import { CORS, MESSAGES, createThrottle, isSet, parseSignup } from './_core.js'
 import { emailStatus, sendConfirmation } from './_email.js'
@@ -142,6 +143,59 @@ async function health(res) {
   }
 }
 
+/**
+ * GET /api/waitlist?probe=1
+ *
+ * The health check above only proves the table can be read. A signup writes,
+ * and a write can fail where a read succeeds: a missing column, a check
+ * constraint, a missing extension. This performs a real insert with a
+ * throwaway address on the reserved .invalid domain, reports exactly what the
+ * database said, and removes the row again.
+ *
+ * The schema it exercises is public in supabase/migrations, so the error detail
+ * here reveals nothing that is not already in the repository.
+ */
+async function probe(res) {
+  const supabaseUrl = process.env.SUPABASE_URL ?? process.env.VITE_SUPABASE_URL
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+
+  if (!isSet(supabaseUrl) || !isSet(serviceKey)) {
+    return send(res, 200, { insert_ok: false, code: 'not_configured', fix: 'Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY, then redeploy.' })
+  }
+
+  const supabase = createClient(supabaseUrl, serviceKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  })
+
+  const address = `probe-${randomUUID()}@waitlist-selftest.invalid`
+
+  const { error: insertError } = await supabase
+    .from('waitlist')
+    .insert({ email: address, first_name: null, source: 'website', status: 'waitlist' })
+
+  if (insertError) {
+    const detail = diagnose(insertError)
+    return send(res, 200, {
+      insert_ok: false,
+      code: detail.code,
+      postgres_code: insertError.code ?? null,
+      message: String(insertError.message ?? '').slice(0, 300),
+      hint: String(insertError.hint ?? insertError.details ?? '').slice(0, 300) || null,
+      fix: detail.fix,
+    })
+  }
+
+  const { error: cleanupError } = await supabase.from('waitlist').delete().eq('email', address)
+
+  return send(res, 200, {
+    insert_ok: true,
+    cleaned_up: !cleanupError,
+    note: cleanupError
+      ? `Insert succeeded. The probe row ${address} could not be removed; delete it by hand.`
+      : 'A real insert succeeded and the probe row was removed. If the form still fails, the failure is not in the database.',
+  })
+}
+
 export default async function handler(req, res) {
   if (req.method === 'OPTIONS') {
     for (const [header, value] of Object.entries(CORS)) res.setHeader(header, value)
@@ -149,6 +203,16 @@ export default async function handler(req, res) {
   }
 
   if (req.method === 'GET') {
+    const wantsProbe = String(req.url ?? '').includes('probe=')
+    if (wantsProbe) {
+      const ip =
+        (req.headers['x-forwarded-for'] ?? '').split(',')[0].trim() ||
+        req.socket?.remoteAddress ||
+        'unknown'
+      // The probe writes, so it is rate limited like a signup.
+      if (throttled(ip)) return send(res, 429, { error: MESSAGES.throttled })
+      return probe(res)
+    }
     return health(res)
   }
 
