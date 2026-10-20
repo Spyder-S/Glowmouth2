@@ -290,5 +290,5 @@ export default async function handler(req, res) {
     console.error('waitlist: confirmation email not sent:', delivery.reason)
   }
 
-  return send(res, 200, { status: 'created' })
+  return send(res, 200, { status: 'created', email_sent: delivery.sent })
 }
