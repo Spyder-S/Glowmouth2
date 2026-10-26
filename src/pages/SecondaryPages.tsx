@@ -72,7 +72,7 @@ const founders = [
   { name:'Vansh Goel', role:'Chief Executive Officer', short:'CEO', image:'vansh-goel', linkedin:'https://www.linkedin.com/in/vanshcgoel', bio:'Leads GlowMouth’s direction and the work of bringing the team’s oral-health idea forward.' },
   { name:'Anish Ranga', role:'Chief Technology Officer', short:'CTO', image:'anish-ranga', linkedin:'https://www.linkedin.com/in/anish-ranga-ab363633b', bio:'Leads the technology work behind GlowMouth’s imaging and AI-supported experience.' },
   { name:'Anhad Sandhu', role:'Chief Research Officer · Biology Lead', short:'Research & biology', image:'anhad-sandhu', linkedin:'https://www.linkedin.com/in/anhad-sandhu-505159364', bio:'Leads research and biology, connecting the project’s questions with its scientific foundations.' },
-  { name:'Raj Mirchandani', role:'Chief Marketing Officer', short:'CMO', image:'raj-mirchandani', linkedin:'https://www.linkedin.com/in/raj-mirchandani-617875365', bio:'Leads marketing and how GlowMouth’s purpose and progress are shared with others.' },
+  { name:'Raj Mirchandani', role:'Chief Financial Officer', short:'CFO', image:'raj-mirchandani', linkedin:'https://www.linkedin.com/in/raj-mirchandani-617875365', bio:'Leads GlowMouth’s financial planning and budgeting.' },
 ]
 
 export function AboutPage({ motion }: { motion: boolean }) {

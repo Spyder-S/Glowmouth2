@@ -75,7 +75,7 @@ Keep all displayed language shorter and more specific than standard startup boil
 - Do not say a claim is clinically validated without supporting documentation.
 
 ## Secondary-page content - October 20, 2026
-User-approved roles: Vansh Goel, CEO; Anish Ranga, CTO; Anhad Sandhu, Chief Research Officer and Biology Lead; Raj Mirchandani, Chief Marketing Officer. Bios describe role responsibilities only.
+User-approved roles: Vansh Goel, CEO; Anish Ranga, CTO; Anhad Sandhu, Chief Research Officer and Biology Lead; Raj Mirchandani, Chief Financial Officer (updated by the user October 26, 2026). Bios describe role responsibilities only.
 Recognition: Blue Ocean Top 500; placed at DECA SLC; DECA ICDC top 25%; $500 VCU da Vinci Center funding. Podcast post coming soon November 14, 2026 (upcoming year inferred). Name unknown; ranking omitted.
 Sources checked October 20: WHO oral health fact sheet March 17, 2025, nearly 3.7 billion globally: https://www.who.int/news-room/fact-sheets/detail/oral-health . CDC 2024 reporting, 2017-March 2020 data: 21% adults 20-64, 10% adolescents 12-19 have untreated cavities; children 6-9 lower-income 25% versus higher-income 10%: https://www.cdc.gov/oral-health/data-research/facts-stats/fast-facts-cavities.html . Different populations, not product metrics.
 LinkedIn identities matched from GlowMouth company post tags at https://www.linkedin.com/company/glowmouth : /in/vanshcgoel; /in/anish-ranga-ab363633b; /in/anhad-sandhu-505159364; /in/raj-mirchandani-617875365. Company posts corroborate Blue Ocean/VCU; Vansh profile corroborates DECA.
