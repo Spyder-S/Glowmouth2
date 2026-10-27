@@ -76,3 +76,6 @@ This is an exact *request manifest*, not proof that these files already exist. I
 
 ## Founder portraits - October 20, 2026
 User supplied four Downloads JPEGs copied without bitmap edits to public/team/{vansh-goel,anish-ranga,anhad-sandhu,raj-mirchandani}.jpg. Responsive CSS crop/saturation only. Original files retained. Founder-name alt text on every portrait.
+
+## Raj portrait update - October 26, 2026
+Replaced `public/team/raj-mirchandani.jpg` with the user-supplied portrait (Screenshot 2026-10-26 at 9.11.39 PM), converted from PNG to JPEG at 90% quality. Existing responsive portrait styling retained.
