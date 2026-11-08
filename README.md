@@ -43,6 +43,12 @@ The server test mocks external services and covers insertion before email, dupli
 
 Import this repository. `vercel.json` configures the Vite build, serverless `/api/waitlist` endpoint, and SPA route fallback. Add the six environment variables above to the intended deployment environments before deploying or redeploying. GitHub does not carry local environment variables. Hosting on GitHub Pages alone will not run the waitlist backend.
 
+### Vercel Web Analytics
+
+The React entry point mounts `Analytics` from `@vercel/analytics/react` (this is a Vite app, not Next.js). The standalone privacy page loads Vercel's analytics script separately. The SPA fallback excludes `/_vercel/` and `/privacy/` so these requests are not rewritten to the React app.
+
+Enable **Web Analytics** for the existing GlowMouth project in Vercel, then deploy this revision. Visit `https://glowmouth.org` and navigate between pages with content blockers disabled. Check for successful requests to `/_vercel/insights/script.js` and the analytics intake endpoint, then check the project's Analytics dashboard after about 30 seconds. No analytics API key or custom events are needed; waitlist form values are not sent as analytics events. Local development does not populate production traffic statistics.
+
 Verify database health and a real signup/confirmation before announcing the public waitlist. Local database connectivity has been verified; live email delivery has not yet been confirmed.
 
 ## Design and content
